@@ -1,14 +1,58 @@
 ﻿using System.Collections.Generic;
+using LinearAlgebraLibrary.Interfaces;
 
 namespace LinearAlgebraLibrary.Matrices
 {
-    public class Skyline
+    public class Skyline //: IMatrixSym
     {
-        public Skyline()
+        private double[] valuesArray;
+        private int[] diagOffsets;
+        private double[] activeColumn;
+        private double _value;
+        public double[] ValuesArray
+        {
+            get => valuesArray;
+            set => valuesArray = value;
+        }
+        public double Value
+        {
+            get => _value;
+            set => _value = value;
+        }
+        
+        //public double this[int i, int j]
+        //{
+        //    get => Values[i, j];
+        //    set => Values[i, j] = value;
+        //}
+        public int Length
+        {
+            get => valuesArray.Length;
+        }
+        public int[] DiagOffsets
+        {
+            get => diagOffsets;
+            set => diagOffsets = value;
+        }
+        public double[] ActiveColumn
+        {
+            get => activeColumn;
+            set => activeColumn = value;
+        }
+        public Skyline(double[,] matrix, int i, int j)
         {
             _listValues = new List<double>();
+            
+            var (values, diagOffsets, activeColumn) = SkylineStorage(matrix);
+         
+            this.DiagOffsets = diagOffsets;
+            this.ValuesArray = values;
+            this.ActiveColumn = activeColumn;
+
+            double _value = ReturnValue(i, j);
+            this.Value = _value;
         }
-        public (double[],int[]) SkylineStorage(double[,] matrix)
+        public (double[],int[], double[]) SkylineStorage(double[,] matrix)
         {
             int rows = matrix.GetLength(0);
             int columns = matrix.GetLength(1);
@@ -57,11 +101,21 @@ namespace LinearAlgebraLibrary.Matrices
             {
                 activeColumn[j] = diagOffsets[j + 1] - diagOffsets[j] - 1;
             }
-
-            return (values,diagOffsets);
+            
+            return (values,diagOffsets, activeColumn);
         }
 
         List<double> _listValues;
-        
+        public double ReturnValue(int i, int j)
+        {
+            double value = 0.0;
+            if (j - i < ActiveColumn[j])
+            {
+                value = ValuesArray[DiagOffsets[j] + j - i];
+            }
+
+            return value;
+        }
     }
+
 }

@@ -117,8 +117,8 @@ namespace TestOperations
                 {4, 0, 1, 24, 2},
                 {0, 0, 3, 2, 25},
             };
-            BandedStorage exercise9 = new BandedStorage();
-            var bandedValues = exercise9.BandedStorageMethod(bandedmatrix);
+            BandedStorage bandedStore = new BandedStorage();
+            var bandedValues = bandedStore.BandedStorageMethod(bandedmatrix);
 
             double[,] actualBandedValues =
             {
@@ -179,21 +179,23 @@ namespace TestOperations
 
             // SkyLine Storage
             double[,] skymatrix =
-            {
-                {1, -1, 0, -3, 0},
-                {-1, 5, 0, 0, 0},
-                {0, 0, 4, 6, 4},
-                {-3, 0, 6, 7, 0},
-                {0, 0, 4, 0, -5},
+            {   { 21,1,0,4,0},
+                { 1,22,2,0,0},
+                { 0,2,23,1,3},
+                { 4,0,1,24,2},
+                { 0,0,3,2,25},
             };
-
-            Skyline skyline = new Skyline();
-            var (_, diagOffsets) = skyline.SkylineStorage(skymatrix);
-
-            int[] actualDiagonals = { 0, 1, 3, 4, 8, 12 };
+            Skyline skyline = new Skyline(skymatrix,2,4);
+            var valuesArray = skyline.ValuesArray;
+            int[] diagOffsets = skyline.DiagOffsets;
+            int[] actualDiagonals = { 0, 1, 3, 5, 9, 13 };
+            double value1 = skyline.Value;
+            double[] actualValuesArray = { 21, 22, 1, 23, 2, 24, 1, 0, 4, 25, 2, 3 };
+            double actualValue1 = 3;
 
             Assert.Equal(diagOffsets, actualDiagonals);
-
+            Assert.Equal(valuesArray, actualValuesArray);
+            Assert.Equal(value1, actualValue1);
         }
 
         [Fact]
@@ -223,44 +225,57 @@ namespace TestOperations
             double[,] U = lufactorization.UMatrix(matrix4);
             double[] solution1 = lufactorization.SolveSystem(L, U, b);
 
-            //Jacobi
-            //Jacobi jacobi = new Jacobi();
-            //(double[] solution2, _, _) = jacobi.JacobiMethod(matrix4, b, 4, 1e-6);
-
-            //Cholesky Factorization
-            CholeskyFactorization choleskyFactorization = new CholeskyFactorization();
-
-            var (matrixL, matrixLT) = choleskyFactorization.ComposeLLTMatrix(sym_posMatrix);
-            double[] solution3 = choleskyFactorization.SolveEquationSystem(matrixL, matrixLT, b);
-
-
-            //    //GaussSiedel
-            //    GaussSiedel gaussSiedel = new GaussSiedel();
-            //    (var solution4,_,_) = gaussSiedel.GaussSiedelMethod(matrix4, b, 30, 1e-6);
+            double[,] matrix3 = { { 1, 2, 4 }, { 3, 8, 14 }, { 2, 6, 13 } };
+            //SOR
+            SOR sor = new SOR();
+            (double[] x, _,_) = sor.SORMethod(matrix3, b, 50, 10e-06, 1.25);
 
             //check
             double[] actualSolution1 = { 3, 4, -2 };
+            double tol = 10E-6;
 
             Assert.Equal(solution1, actualSolution1);
 
-            double[] actualSolution2 = { -3.5, 4.333, -1.2778 };
-
-            double tol = 1E-3;
-
-            //for (int i = 0; i < solution2.Length; i++)
-            //{
-            //    Debug.Assert(Math.Abs(solution2[i] - actualSolution1[i]) < tol); 
-            //}
-
-            for (int i = 0; i < solution3.Length; i++)
+            for (int i = 0; i < x.Length; i++)
             {
-                Debug.Assert(Math.Abs(solution3[i] - actualSolution2[i]) < tol);
+                Debug.Assert(Math.Abs(x[i] - actualSolution1[i]) < tol);
             }
 
-            //    //for (int i = 0; i < solution3.Length; i++)
-            //    //{
-            //    //    Debug.Assert(Math.Abs(solution4[i] - actualSolution1[i]) < tol);
-            //    //}
+            ////Jacobi
+            ////Jacobi jacobi = new Jacobi();
+            ////(double[] solution2, _, _) = jacobi.JacobiMethod(matrix4, b, 4, 1e-6);
+
+            ////Cholesky Factorization
+            //CholeskyFactorization choleskyFactorization = new CholeskyFactorization();
+
+            //var (matrixL, matrixLT) = choleskyFactorization.ComposeLLTMatrix(sym_posMatrix);
+            //double[] solution3 = choleskyFactorization.SolveEquationSystem(matrixL, matrixLT, b);
+
+
+            ////    //GaussSiedel
+            ////    GaussSiedel gaussSiedel = new GaussSiedel();
+            ////    (var solution4,_,_) = gaussSiedel.GaussSiedelMethod(matrix4, b, 30, 1e-6);
+
+
+
+            //double[] actualSolution2 = { -3.5, 4.333, -1.2778 };
+
+
+
+            ////for (int i = 0; i < solution2.Length; i++)
+            ////{
+            ////    Debug.Assert(Math.Abs(solution2[i] - actualSolution1[i]) < tol); 
+            ////}
+
+            //for (int i = 0; i < solution3.Length; i++)
+            //{
+            //    Debug.Assert(Math.Abs(solution3[i] - actualSolution2[i]) < tol);
+            //}
+
+            ////    //for (int i = 0; i < solution3.Length; i++)
+            ////    //{
+            ////    //    Debug.Assert(Math.Abs(solution4[i] - actualSolution1[i]) < tol);
+            ////    //}
         }
     }
 }

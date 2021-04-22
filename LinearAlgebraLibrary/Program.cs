@@ -16,7 +16,7 @@ namespace LinearAlgebraLibrary
             double[] b = { 3, 4, 2 };
             double[,] matrix3 = { { 1, 2, 4 }, { 2, 8, 6 }, { 4, 6, 9 } };
             SSOR ssor = new SSOR();
-            var (solution, _, _) = ssor.SSORMethod(matrix3, b, 1000, 10e-3, 1.3);
+            var (solution, _, _) = ssor.SSORMethod(matrix3, b, 100000, 10e-4, 1.3);
 
             //for (int i = 0; i < b.Length; i++)
             //{

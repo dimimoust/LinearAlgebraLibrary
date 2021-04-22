@@ -9,7 +9,6 @@ namespace LinearAlgebraLibrary.Matrices
         private double[] values;
         private int rows;
         private int columns;
-        private double[,] _valuesArray;
         private int[] rowsArray;
         private int[] columnsArray;
 
@@ -86,9 +85,6 @@ namespace LinearAlgebraLibrary.Matrices
 
         public double[] Multiplication(double[] vector)
         {
-            //CoordinateList coordinatelist = new CoordinateList();
-            //(double[] values, int[] rows, int[] columns) = coordinatelist.CoordinateListStorage(matrix);
-
             double[] product = new double[vector.Length];
             for (int i = 0; i < vector.Length; i++)
             {

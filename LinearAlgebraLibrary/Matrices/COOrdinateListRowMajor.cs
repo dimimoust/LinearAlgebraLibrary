@@ -9,7 +9,6 @@ namespace LinearAlgebraLibrary.Matrices
         private double[] values;
         private int rows;
         private int columns;
-        private double[,] _valuesArray;
         private int[] rowsArray;
         private int[] columnsArray;
 
@@ -17,11 +16,6 @@ namespace LinearAlgebraLibrary.Matrices
         {
             get => values;
             set => values = value;
-        }
-        public double this[int i, int j]
-        {
-            get => _valuesArray[i, j];
-            set => _valuesArray[i, j] = value;
         }
         public int Rows
         {

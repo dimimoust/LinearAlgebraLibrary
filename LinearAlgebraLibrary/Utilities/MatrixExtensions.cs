@@ -8,10 +8,12 @@ namespace LinearAlgebraLibrary.Utilities
 {
     public static class MatrixExtensions
     {
-        public static bool IsDiagonallyDominant(this IMatrix matrix, int a)
-        {
+        public static bool IsDiagonallyDominant(this /*IMatrix*/DenseMatrix matrix, int a)
+        { 
             int rows = matrix.Rows;
             int columns = matrix.Columns;
+            //int rows = matrix.Length;
+            //int columns = matrix.Length;
             double[] sumRow = new double[rows];
             double diagonals = 0.0;
 

@@ -11,24 +11,14 @@ namespace LinearAlgebraLibrary.Solvers
             int columns = A.GetLength(1);
             double residual = 0.0;
 
-            Determinant det = new Determinant();
-            double[] determinats = det.DETcalculator(A);
-            for (int i = 0; i < rows; i++)
-            {
-                if (determinats[i] <= 0)
-                {
-                    throw new ArgumentException("The matrix ISNOT positive definite");
-                }
-            }
-
             double[] initialGuess = new double[b.Length];
             double[] x = initialGuess;
             double[] y = new double[b.Length];
 
             int iterations = 0;
 
-            while (residual <= accuracy)
-            {
+           // while (residual <= accuracy)
+            //{
                 for (int t = 1; t < maxIterations; t++)
                 {
                     for (int i = 0; i < rows; i++)
@@ -61,9 +51,10 @@ namespace LinearAlgebraLibrary.Solvers
 
                 for (int i = 0; i < columns; i++)
                 {
-                    residual += Math.Sqrt(Math.Pow(result[i], 2));
+                    residual += Math.Pow(result[i], 2);
                 }
-            }
+                residual = Math.Sqrt(residual);
+            //}
 
             return (x, residual, iterations);
         }
